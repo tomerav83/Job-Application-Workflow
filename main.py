@@ -40,7 +40,7 @@ ALLOWED_DISTRICTS = [
 
 CSV_COLUMNS = [
     "job_id", "date_found", "company", "title", "location",
-    "is_remote", "job_url", "platform", "status", "applied_date", "notes",
+    "is_remote", "job_url", "apply_url", "platform", "description", "status", "applied_date", "notes",
 ]
 
 
@@ -169,7 +169,9 @@ def run(full_sync: bool) -> None:
         "location": new["location"].fillna(""),
         "is_remote": new["is_remote"].fillna(False),
         "job_url": new["job_url"],
+        "apply_url": new["job_url_direct"].fillna("") if "job_url_direct" in new.columns else "",
         "platform": new["platform"],
+        "description": new["description"].fillna("") if "description" in new.columns else "",
         "status": "new",
         "applied_date": "",
         "notes": "",
