@@ -11,7 +11,7 @@ from pathlib import Path
 import pandas as pd
 from jobspy import scrape_jobs
 
-CSV_PATH = Path.home() / "Documents" / "job_tracker.csv"
+CSV_PATH = Path.home() / "Documents" / "job-application-automation" / "job_tracker.csv"
 
 SEARCH_TERMS = [
     "senior backend engineer",
@@ -23,14 +23,18 @@ SITES = ["linkedin", "indeed"]
 
 EXCLUDE_TITLE_KEYWORDS = [
     # seniority/role level
-    "manager", "director", "vp", "principal", "intern", "junior", "lead", "staff",
     # wrong disciplines (still appear in LinkedIn results)
+    "manager", "director", "vp", "principal", "intern", "junior", "lead", "staff",
     "qa", "quality assurance", "in tests",
     "frontend", "front-end", "front end",
     "devops", "dev ops", "mlops", "devsecops",
     "embedded",
-    "security engineer",
-    "ai engineer", "ai research",
+    "security engineer", "ai research",
+]
+
+BLACKLISTED_COMPANIES: list[str] = [
+    # add company names here (case-insensitive)
+    "Oligo", "Unity", "Forter", "Nominal", "Mind", "Wiz", "vHive", "SentinelOne", "Terra", "Sola", "Taboola", "Navan", "Unframe", "Gong", "Coralogix"
 ]
 
 ALLOWED_DISTRICTS = [
@@ -159,6 +163,15 @@ def run(full_sync: bool) -> None:
     else:
         filtered_location = 0
 
+    # Company blacklist filter
+    if not new.empty and BLACKLISTED_COMPANIES:
+        blacklist_lower = [c.lower() for c in BLACKLISTED_COMPANIES]
+        blacklist_mask = ~new["company"].fillna("").str.lower().isin(blacklist_lower)
+        filtered_blacklist = int((~blacklist_mask).sum())
+        new = new[blacklist_mask].copy()
+    else:
+        filtered_blacklist = 0
+
     # Build rows for the CSV
     today = pd.Timestamp.now().strftime("%Y-%m-%d")
     out = pd.DataFrame({
@@ -190,8 +203,9 @@ def run(full_sync: bool) -> None:
     print(f"Skipped (CSV dupes):    {dupes}")
     print(f"Filtered out (title):   {filtered_out}")
     print(f"Filtered out (location):{filtered_location}")
+    print(f"Filtered out (company): {filtered_blacklist}")
     print(f"New jobs added:         {added}")
-    print(f"  (check: {within_batch_dupes} + {dupes} + {filtered_out} + {filtered_location} + {added} = {within_batch_dupes + dupes + filtered_out + filtered_location + added} / {total_scraped})")
+    print(f"  (check: {within_batch_dupes} + {dupes} + {filtered_out} + {filtered_location} + {filtered_blacklist} + {added} = {within_batch_dupes + dupes + filtered_out + filtered_location + filtered_blacklist + added} / {total_scraped})")
     print(f"{'='*60}")
     if added:
         print("\nNew jobs:")
