@@ -20,3 +20,6 @@ env/
 
 # Output
 *.csv
+
+# Private — personal info, not for version control
+private-files/

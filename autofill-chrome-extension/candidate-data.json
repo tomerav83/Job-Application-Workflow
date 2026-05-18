@@ -1,0 +1,22 @@
+{
+  "personal": {
+    "first_name": "YOUR_FIRST_NAME",
+    "last_name": "YOUR_LAST_NAME",
+    "full_name": "YOUR_FULL_NAME",
+    "email": "your.email@example.com",
+    "phone": "+X-XX-XXX-XXXX",
+    "phone_local": "0XXXXXXXXX",
+    "location": { "city": "YOUR_CITY", "country": "YOUR_COUNTRY" },
+    "linkedin": "https://linkedin.com/in/your-profile"
+  },
+  "work_experience": [
+    { "title": "YOUR_TITLE", "company": "YOUR_COMPANY", "start": "MM/YYYY", "end": "MM/YYYY" },
+    { "title": "YOUR_TITLE", "company": "YOUR_COMPANY", "start": "MM/YYYY", "end": "MM/YYYY" }
+  ],
+  "screening_defaults": {
+    "authorized_to_work": true,
+    "requires_sponsorship": false,
+    "willing_to_relocate": false,
+    "notice_period_days": 30
+  }
+}
