@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YOUR NAME – YOUR JOB TITLE</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #e8e8e8;
+      color: #1a2332;
+      font-size: 11.5px;
+      line-height: 1.4;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      max-height: 297mm;
+      overflow: hidden;
+      margin: 20px auto;
+      background: #fff;
+      padding: 18px 26px 16px 26px;
+      box-shadow: 0 2px 18px rgba(0,0,0,0.13);
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page { margin: 0; box-shadow: none; }
+    }
+
+    /* ── HEADER ── */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .header-left h1 {
+      font-size: 25px;
+      font-weight: 700;
+      color: #1a2332;
+      letter-spacing: -0.3px;
+    }
+
+    .header-left .subtitle {
+      font-size: 11.5px;
+      color: #4a5568;
+      margin-top: 2px;
+    }
+
+    .header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      padding-top: 3px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #1a2332;
+    }
+
+    .contact-item a {
+      color: #1a2332;
+      text-decoration: none;
+    }
+
+    .contact-icon {
+      width: 18px;
+      height: 18px;
+      background: #1a2332;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-icon svg {
+      width: 11px;
+      height: 11px;
+      fill: #fff;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid #d0d5dd;
+      margin: 9px 0;
+    }
+
+    /* ── SUMMARY ── */
+    .summary {
+      font-size: 11px;
+      color: #2d3748;
+      margin-bottom: 11px;
+      line-height: 1.45;
+    }
+
+    /* ── TWO-COLUMN BODY ── */
+    .body {
+      display: grid;
+      grid-template-columns: 57fr 43fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    /* ── SECTION TITLE ── */
+    .section-title {
+      font-size: 12.5px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: #1a2332;
+      margin-bottom: 9px;
+      padding-bottom: 4px;
+      border-bottom: 2px solid #1a2332;
+    }
+
+    /* ── WORK EXPERIENCE ── */
+    .work-section { }
+
+    .job {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 11px;
+      position: relative;
+    }
+
+    .job-timeline {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+      width: 11px;
+    }
+
+    .job-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #1a2332;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .job-line {
+      width: 2px;
+      flex: 1;
+      background: #cbd5e0;
+      margin-top: 3px;
+    }
+
+    .job-content { flex: 1; }
+
+    .job-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #1a2332;
+    }
+
+    .job-company {
+      font-size: 11.5px;
+      color: #1a2332;
+      margin-bottom: 1px;
+    }
+
+    .job-date {
+      font-size: 10.5px;
+      color: #718096;
+      margin-bottom: 4px;
+    }
+
+    .job-achievements {
+      border-left: 2.5px solid #1a2332;
+      padding-left: 8px;
+      margin-top: 3px;
+    }
+
+    .achievements-label {
+      font-size: 10px;
+      font-style: italic;
+      color: #4a5568;
+      margin-bottom: 3px;
+    }
+
+    .achievements-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .achievements-list li {
+      position: relative;
+      padding-left: 12px;
+      margin-bottom: 3px;
+      font-size: 10.5px;
+      color: #2d3748;
+      line-height: 1.4;
+    }
+
+    .achievements-list li::before {
+      content: '-';
+      position: absolute;
+      left: 0;
+      color: #1a2332;
+      font-weight: 700;
+    }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 0;
+    }
+
+    .skill-tag {
+      background: #1a2332;
+      color: #fff;
+      border-radius: 4px;
+      padding: 3px 8px;
+      font-size: 10.5px;
+      font-weight: 500;
+      letter-spacing: 0.1px;
+    }
+
+    /* ── ACHIEVEMENTS SECTION ── */
+    .achievements-section { margin-top: 14px; }
+
+    .achievement-item {
+      font-size: 11px;
+      color: #2d3748;
+      margin-bottom: 5px;
+      line-height: 1.4;
+    }
+
+    /* ── LANGUAGES ── */
+    .languages-section { margin-top: 14px; }
+
+    .languages-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .lang-item { }
+
+    .lang-name {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #1a2332;
+    }
+
+    .lang-level {
+      font-size: 10px;
+      font-style: italic;
+      color: #4a5568;
+    }
+
+    /* ── INTERESTS ── */
+    .interests-section { margin-top: 14px; }
+
+    .interests-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .interest-tag {
+      border: 1.5px solid #1a2332;
+      border-radius: 4px;
+      padding: 3px 10px;
+      font-size: 11px;
+      color: #1a2332;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-left">
+      <h1>YOUR NAME</h1>
+      <p class="subtitle">YOUR JOB TITLE</p>
+    </div>
+    <div class="header-right">
+      <div class="contact-item">
+        <span>your.email@example.com</span>
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        </div>
+      </div>
+      <div class="contact-item">
+        <span>+X-XX-XXX-XXXX</span>
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C10.61 21 3 13.39 3 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.58a1 1 0 01-.25 1.01l-2.2 2.2z"/></svg>
+        </div>
+      </div>
+      <div class="contact-item">
+        <span>Your City, Country</span>
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 119.5 9 2.5 2.5 0 0112 11.5z"/></svg>
+        </div>
+      </div>
+      <div class="contact-item">
+        <a href="https://linkedin.com/in/your-profile" target="_blank">linkedin.com/in/your-profile</a>
+        <div class="contact-icon">
+          <svg viewBox="0 0 24 24"><path fill="#fff" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- SUMMARY: 2-3 sentences. Write in first-person implicit voice (no "Brings", "Offers", "Delivers").
+       Ground every claim in real experience. Do not name domains the reader knows better than you. -->
+  <p class="summary">
+    YOUR PROFESSIONAL SUMMARY — describe your years of experience, core technical strengths,
+    and what makes your background distinctive. Keep it to 2-3 sentences maximum.
+  </p>
+
+  <!-- TWO-COLUMN BODY -->
+  <div class="body">
+
+    <!-- LEFT: WORK EXPERIENCE -->
+    <div class="work-section">
+      <div class="section-title">Work Experience</div>
+
+      <!-- Job 1 (most recent — no bottom line on the dot) -->
+      <div class="job">
+        <div class="job-timeline">
+          <div class="job-dot"></div>
+          <div class="job-line"></div>
+        </div>
+        <div class="job-content">
+          <div class="job-title">YOUR JOB TITLE</div>
+          <div class="job-company">Company Name</div>
+          <div class="job-date">MM/YYYY - MM/YYYY</div>
+          <div class="job-achievements">
+            <div class="achievements-label">Achievements/Tasks</div>
+            <ul class="achievements-list">
+              <li>Quantified achievement — what you built, the scale it operated at, or the outcome it produced.</li>
+              <li>Another achievement — lead with an action verb, end with a measurable result where possible.</li>
+              <li>Third achievement — keep each bullet under 180 characters.</li>
+              <li>Fourth achievement (max 4 bullets per role in tailored versions).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Job 2 -->
+      <div class="job">
+        <div class="job-timeline">
+          <div class="job-dot"></div>
+          <div class="job-line"></div>
+        </div>
+        <div class="job-content">
+          <div class="job-title">YOUR JOB TITLE</div>
+          <div class="job-company">Company Name</div>
+          <div class="job-date">MM/YYYY - MM/YYYY</div>
+          <div class="job-achievements">
+            <div class="achievements-label">Achievements/Tasks</div>
+            <ul class="achievements-list">
+              <li>Achievement describing what you owned and how it moved the needle.</li>
+              <li>Achievement highlighting a technical decision, its rationale, and its impact.</li>
+              <li>Achievement showing scope — team size, traffic volume, data scale, or cost saved.</li>
+              <li>Achievement that is specific enough that a hiring manager can picture the work.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Job 3 (oldest — omit job-line so no dangling connector) -->
+      <div class="job">
+        <div class="job-timeline">
+          <div class="job-dot"></div>
+        </div>
+        <div class="job-content">
+          <div class="job-title">YOUR JOB TITLE</div>
+          <div class="job-company">Company Name</div>
+          <div class="job-date">MM/YYYY - MM/YYYY</div>
+          <div class="job-achievements">
+            <div class="achievements-label">Achievements/Tasks</div>
+            <ul class="achievements-list">
+              <li>Achievement showing technical breadth or early-career impact.</li>
+              <li>Achievement demonstrating collaboration, mentorship, or cross-team influence.</li>
+              <li>Achievement tied to a concrete system, feature, or process improvement.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="right-col">
+
+      <!-- SKILLS: list technologies you can speak to confidently in an interview.
+           The tailoring workflow will reorder and optionally add from your adjacency list. -->
+      <div class="section-title">Skills</div>
+      <div class="skills-grid">
+        <span class="skill-tag">Language 1</span>
+        <span class="skill-tag">Language 2</span>
+        <span class="skill-tag">Framework 1</span>
+        <span class="skill-tag">Database 1</span>
+        <span class="skill-tag">Cloud / Infra</span>
+        <span class="skill-tag">Add your skills here</span>
+      </div>
+
+      <!-- ACHIEVEMENTS: awards, personal projects, milestones — remove section if not applicable -->
+      <div class="achievements-section">
+        <div class="section-title">Achievements</div>
+        <div class="achievement-item">Award or milestone with date (MM/YYYY)</div>
+        <div class="achievement-item">Personal project, publication, or notable outside-of-work achievement</div>
+      </div>
+
+      <!-- LANGUAGES: spoken languages -->
+      <div class="languages-section">
+        <div class="section-title">Languages</div>
+        <div class="languages-grid">
+          <div class="lang-item">
+            <div class="lang-name">Language 1</div>
+            <div class="lang-level">Native or Bilingual Proficiency</div>
+          </div>
+          <div class="lang-item">
+            <div class="lang-name">Language 2</div>
+            <div class="lang-level">Professional Working Proficiency</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERESTS: optional — remove section if you prefer not to include -->
+      <div class="interests-section">
+        <div class="section-title">Interests</div>
+        <div class="interests-grid">
+          <span class="interest-tag">Interest 1</span>
+          <span class="interest-tag">Interest 2</span>
+          <span class="interest-tag">Interest 3</span>
+        </div>
+      </div>
+
+    </div><!-- end right-col -->
+  </div><!-- end body -->
+
+</div><!-- end page -->
+</body>
+</html>

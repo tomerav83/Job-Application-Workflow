@@ -23,3 +23,7 @@ env/
 
 # Private — personal info, not for version control
 private-files/
+.claude/settings.local.json
+
+# CV PDFs — generated from local HTML, not for version control
+tailoring/Base-CV.pdf
