@@ -27,3 +27,7 @@ private-files/
 
 # CV PDFs — generated from local HTML, not for version control
 tailoring/Base-CV.pdf
+
+# Node
+node_modules/
+tailoring/node_modules/

@@ -1,0 +1,60 @@
+{
+  "personal": {
+    "name": "YOUR_FULL_NAME",
+    "title": "<CHOSEN_TITLE_VARIANT>",
+    "email": "YOUR_EMAIL",
+    "phone": "YOUR_PHONE",
+    "location": "YOUR_CITY, YOUR_COUNTRY",
+    "linkedin": "linkedin.com/in/YOUR_HANDLE"
+  },
+  "summary": "<TAILORED_SUMMARY>",
+  "work_experience": [
+    {
+      "title": "<TITLE_MATCHING_CV_HEADER>",
+      "company": "Most Recent Company",
+      "date": "MM/YYYY - present",
+      "achievements": [
+        "<BULLET_1>",
+        "<BULLET_2>",
+        "<BULLET_3>",
+        "<BULLET_4>"
+      ]
+    },
+    {
+      "title": "Previous Job Title",
+      "company": "Previous Company",
+      "date": "MM/YYYY - MM/YYYY",
+      "achievements": [
+        "<BULLET_1>",
+        "<BULLET_2>",
+        "<BULLET_3>"
+      ]
+    },
+    {
+      "title": "Earlier Job Title",
+      "company": "Earlier Company",
+      "date": "MM/YYYY - MM/YYYY",
+      "achievements": [
+        "<BULLET_1>",
+        "<BULLET_2>",
+        "<BULLET_3>"
+      ]
+    }
+  ],
+  "skills": ["<SKILL_1>", "<SKILL_2>"],
+  "achievements": [
+    "YOUR_ACHIEVEMENT_1",
+    "YOUR_ACHIEVEMENT_2"
+  ],
+  "education": [
+    {
+      "degree": "YOUR_DEGREE",
+      "institution": "YOUR_INSTITUTION",
+      "date": "YYYY"
+    }
+  ],
+  "languages": [
+    { "name": "YOUR_LANGUAGE", "level": "Native or Bilingual Proficiency" }
+  ],
+  "interests": ["YOUR_INTEREST_1", "YOUR_INTEREST_2"]
+}

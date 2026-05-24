@@ -8,6 +8,9 @@ SETUP — fill in your details before first use:
 3. Update the <qualification_rule> thresholds if needed — they reference YOUR_YEARS_EXP.
 4. Update <title_rules> with the title variants that apply to your target roles.
 5. Update candidate_context.md with your skills, experience details, and adjacency list.
+6. Update the render-cv.js path in Step 4 to match where you cloned this repo.
+7. Create ~/Documents/job-application-automation/resume-template.json from the provided template
+   and fill in your personal info. See README for details.
 -->
 
 <context>
@@ -27,8 +30,8 @@ This workflow is purely: read - judge - tailor - render - update CSV.
 <key_files>
 - Job tracker:     ~/Documents/job-application-automation/job_tracker.csv
 - Base CV (HTML):  ~/Documents/job-application-automation/CVs/base/YOUR_NAME_SLUG-CV.html
-- Tailored CVs:    ~/Documents/job-application-automation/CVs/tailored/{job_id}/YOUR_NAME_SLUG.html  (you create)
-- PDF output:      ~/Documents/job-application-automation/CVs/tailored/{job_id}/YOUR_NAME_SLUG.pdf   (you create)
+- Resume JSON:     ~/Documents/job-application-automation/CVs/tailored/{job_id}/resume.json  (you create)
+- PDF output:      ~/Documents/job-application-automation/CVs/tailored/{job_id}/YOUR_NAME_SLUG.pdf   (render-cv.js creates)
 </key_files>
 
 <candidate_profile>
@@ -195,18 +198,7 @@ production monitoring."
 <formatting_rules>
 - Never use em dashes (—) anywhere in the output. Use a regular hyphen (-) instead.
   This applies to bullets, summaries, titles, notes, and all other text.
-- Always apply the compact CSS preset to the generated HTML. Do not use the base CV's default
-  spacing. Compact values:
-    body: font-size: 11px; line-height: 1.35;
-    .page: padding: 14px 26px 12px 26px;
-    .divider: margin: 7px 0;
-    .summary: font-size: 10.5px; margin-bottom: 9px; line-height: 1.4;
-    .section-title: font-size: 12px; margin-bottom: 7px; padding-bottom: 3px;
-    .job: margin-bottom: 9px;
-    .job-date: font-size: 10px; margin-bottom: 3px;
-    .achievements-list li: font-size: 10px; margin-bottom: 2px; line-height: 1.35;
-    .achievements-section, .languages-section, .interests-section: margin-top: 10px;
-    .achievement-item: font-size: 10.5px; margin-bottom: 4px; line-height: 1.35;
+- Formatting and layout are handled entirely by render-cv.js. Do not include any CSS or HTML.
 </formatting_rules>
 
 </substep>
@@ -226,41 +218,30 @@ Output the following before saving the file:
 Use the one-liner from "Summary angle" as the tailoring note written to the CSV `notes` column in Step 5.
 </substep>
 
-<substep id="3d" name="save_html">
-Save to: ~/Documents/job-application-automation/CVs/tailored/{job_id}/YOUR_NAME_SLUG.html
+<substep id="3d" name="save_json">
+Start from the template at ~/Documents/job-application-automation/resume-template.json.
+Replace every <PLACEHOLDER> value with the tailored content.
+Personal info, achievements, languages, and interests are pre-filled - only change them if tailoring requires it.
+
+Save the completed JSON to: ~/Documents/job-application-automation/CVs/tailored/{job_id}/resume.json
 If a file already exists at that path, overwrite it.
 </substep>
 
 </step>
 
 <step id="4" name="render_pdf">
-For each tailored HTML file, render it to PDF using Playwright/Chromium.
+For each resume.json, run:
 
-Command pattern:
-  node -e "
-    const { chromium } = require('playwright');
-    (async () => {
-      const browser = await chromium.launch();
-      const page = await browser.newPage();
-      await page.goto('file://' + process.env.HOME + '/Documents/job-application-automation/CVs/tailored/{job_id}/YOUR_NAME_SLUG.html');
+  # SETUP: update this path to match your repo location
+  node ~/path/to/job-application-automation/tailoring/render-cv.js \
+    ~/Documents/job-application-automation/CVs/tailored/{job_id}/resume.json
 
-      const overflows = await page.\$eval('.page', el => el.scrollHeight > el.clientHeight);
-      if (overflows) {
-        await page.addStyleTag({ content: \`
-          .achievements-list li { font-size: 9.5px !important; line-height: 1.3 !important; margin-bottom: 1px !important; }
-          .job { margin-bottom: 7px !important; }
-          .job-achievements { margin-top: 2px !important; }
-        \` });
-      }
+This produces:
+  ~/Documents/job-application-automation/CVs/tailored/{job_id}/YOUR_NAME_SLUG.html
+  ~/Documents/job-application-automation/CVs/tailored/{job_id}/YOUR_NAME_SLUG.pdf
 
-      await page.pdf({ path: process.env.HOME + '/Documents/job-application-automation/CVs/tailored/{job_id}/YOUR_NAME_SLUG.pdf', format: 'A4', printBackground: true });
-      await browser.close();
-    })();
-  "
-
-Never use wkhtmltopdf. It does not support modern CSS and will break the layout.
-
-If Playwright is not installed, run: npm install playwright && npx playwright install chromium
+If Playwright is not installed, run from the repo root:
+  npm install playwright && npx playwright install chromium
 </step>
 
 <step id="5" name="update_csv">
@@ -305,9 +286,8 @@ These rules override everything else in this prompt:
 - Never remove "Senior" from the title.
 - Never name a domain or industry unless it appears in candidate_context.md or the base CV.
 - Never use em dashes. Hyphens only.
-- Generate each CV HTML file individually. Do not
-  write a script or loop that produces multiple CV files in one pass.
-- Each CV must be produced by reading the JD, reasoning about it, and writing the HTML
+- Generate each resume.json individually. Do not batch-generate multiple JSON files in one pass.
+- Each JSON must be produced by reading the JD, reasoning about it, and writing the content
   for that job alone. Batch generation defeats the purpose of tailoring.
 </non_negotiables>
 
