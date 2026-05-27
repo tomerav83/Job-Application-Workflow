@@ -100,12 +100,12 @@ if (!personal || !personal.name) {
   const fallback = loadCandidateDataFallback();
   if (!fallback) {
     console.error(
-      'Error: no personal info found.\n' +
-      '  Checked:\n' +
-      '    1. resume.json → personal.name\n' +
-      '    2. private-files/candidate-data.json\n' +
-      '    3. autofill-chrome-extension/candidate-data.json\n' +
-      '  Add a "personal" block to resume.json or create one of the above files.'
+        'Error: no personal info found.\n' +
+        '  Checked:\n' +
+        '    1. resume.json → personal.name\n' +
+        '    2. private-files/candidate-data.json\n' +
+        '    3. autofill-chrome-extension/candidate-data.json\n' +
+        '  Add a "personal" block to resume.json or create one of the above files.'
     );
     process.exit(1);
   }
@@ -139,16 +139,16 @@ const ICONS = {
 
 function esc(str) {
   return String(str || '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
 }
 
 function contactItem(text, iconKey, href) {
   const label = href
-    ? `<a href="${esc(href)}" target="_blank">${esc(text)}</a>`
-    : esc(text);
+      ? `<a href="${esc(href)}" target="_blank">${esc(text)}</a>`
+      : esc(text);
   return `
       <div class="contact-item">
         <span>${label}</span>
@@ -158,8 +158,8 @@ function contactItem(text, iconKey, href) {
 
 function renderHeader(p) {
   const linkedinHref = p.linkedin
-    ? (p.linkedin.startsWith('http') ? p.linkedin : `https://${p.linkedin}`)
-    : '';
+      ? (p.linkedin.startsWith('http') ? p.linkedin : `https://${p.linkedin}`)
+      : '';
 
   return `
   <!-- HEADER -->
@@ -175,7 +175,7 @@ function renderHeader(p) {
         p.location ? contactItem(p.location, 'location', '')                   : '',
         p.linkedin ? contactItem(p.linkedin, 'linkedin', linkedinHref)         : '',
       ].join('')
-    }
+  }
     </div>
   </div>`;
 }
@@ -185,12 +185,12 @@ function renderJobs(jobs) {
   return jobs.map((job, i) => {
     const isLast = i === jobs.length - 1;
     const timeline = isLast
-      ? `<div class="job-dot"></div>`
-      : `<div class="job-dot"></div><div class="job-line"></div>`;
+        ? `<div class="job-dot"></div>`
+        : `<div class="job-dot"></div><div class="job-line"></div>`;
 
     const bullets = (job.achievements || [])
-      .map(a => `              <li>${esc(a)}</li>`)
-      .join('\n');
+        .map(a => `              <li>${esc(a)}</li>`)
+        .join('\n');
 
     return `
       <div class="job">
@@ -610,6 +610,46 @@ fs.mkdirSync(outDir, { recursive: true });
 fs.writeFileSync(htmlPath, html, 'utf8');
 console.log(`HTML written: ${htmlPath}`);
 
+// ─── 8b. Write Apply.html shortcut ───────────────────────────────────────────
+// A tiny redirect page so the job's apply link is one double-click away from the
+// folder. Plain .html is the only shortcut format that opens by double-click on
+// macOS, Linux, and Windows alike (no .url/.webloc/.desktop per-OS quirks).
+
+const applyUrl = resume.apply_url || resume.job_url || '';
+
+if (applyUrl) {
+  const safeUrl = esc(applyUrl);
+  const applyHtml = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="refresh" content="0; url=${safeUrl}">
+<title>Apply</title>
+<style>
+  body { font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+         display: flex; align-items: center; justify-content: center;
+         min-height: 100vh; margin: 0; background: #f4f5f7; }
+  a.btn { display: inline-block; padding: 14px 28px; border-radius: 8px;
+          background: #2563eb; color: #fff; text-decoration: none; font-size: 18px;
+          font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
+  a.btn:hover { background: #1d4ed8; }
+  p { color: #6b7280; font-size: 13px; margin-top: 16px; text-align: center; }
+</style>
+</head>
+<body>
+<div style="text-align:center">
+  <a class="btn" href="${safeUrl}">Apply now &rarr;</a>
+  <p>If you are not redirected automatically, click the button above.</p>
+</div>
+</body>
+</html>`;
+  const applyPath = path.join(outDir, 'Apply.html');
+  fs.writeFileSync(applyPath, applyHtml, 'utf8');
+  console.log(`Apply link:   ${applyPath}`);
+} else {
+  console.log('Info: no apply_url in resume.json — skipping Apply.html');
+}
+
 // ─── 9. Render PDF via Playwright ────────────────────────────────────────────
 
 async function renderPdf() {
@@ -618,8 +658,8 @@ async function renderPdf() {
     ({ chromium } = require('playwright'));
   } catch (e) {
     console.error(
-      'Error: Playwright is not installed.\n' +
-      'Run: npm install playwright && npx playwright install chromium'
+        'Error: Playwright is not installed.\n' +
+        'Run: npm install playwright && npx playwright install chromium'
     );
     process.exit(1);
   }
@@ -631,8 +671,8 @@ async function renderPdf() {
 
   // Overflow fallback: shrink fonts if the page content exceeds A4 height
   const overflows = await page.$eval(
-    '.page',
-    el => el.scrollHeight > el.clientHeight
+      '.page',
+      el => el.scrollHeight > el.clientHeight
   );
 
   if (overflows) {

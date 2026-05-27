@@ -222,6 +222,7 @@ Use the one-liner from "Summary angle" as the tailoring note written to the CSV 
 Start from the template at ~/Documents/job-application-automation/resume-template.json.
 Replace every <PLACEHOLDER> value with the tailored content.
 Personal info, achievements, languages, and interests are pre-filled - only change them if tailoring requires it.
+Set the "apply_url" field to this row's `apply_url` value, falling back to `job_url` when `apply_url` is blank. This drives the clickable Apply.html shortcut; it never appears in the rendered CV.
 
 Save the completed JSON to: ~/Documents/job-application-automation/CVs/tailored/{job_id}/resume.json
 If a file already exists at that path, overwrite it.
@@ -239,6 +240,7 @@ For each resume.json, run:
 This produces:
   ~/Documents/job-application-automation/CVs/tailored/{job_id}/YOUR_NAME_SLUG.html
   ~/Documents/job-application-automation/CVs/tailored/{job_id}/YOUR_NAME_SLUG.pdf
+  ~/Documents/job-application-automation/CVs/tailored/{job_id}/Apply.html   (clickable apply link, if apply_url is set)
 
 If Playwright is not installed, run from the repo root:
   npm install playwright && npx playwright install chromium

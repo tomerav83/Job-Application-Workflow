@@ -61,7 +61,9 @@ The model never generates HTML directly — only structured data.
 
 **How to run (Claude cowork):**
 1. Open `~/Documents/job-application-automation` in Cowork.
-2. Paste `tailoring/COWORK_PROMPT.txt`, or `tailoring/TAILOR_PROMPT.txt` followed by the job description.
+2. Paste your personalized `COWORK_PROMPT.txt`, or `TAILOR_PROMPT.txt` followed by the job
+   description, from `private-files/{timestamp}-generated-prompts/`. The `tailoring/` versions are
+   generic templates; setup generates personalized copies into that gitignored folder.
 
 **Setup (one-time):**
 ```bash
@@ -75,9 +77,9 @@ SETUP comment for details.
 **Key files:**
 - `tailoring/Base-CV.html` — base CV template (also deployed to `~/Documents/job-application-automation/CVs/base/`)
 - `tailoring/candidate_context.md` — authoritative background facts not in the CV
-- `tailoring/render-cv.js` — converts `resume.json` → `{First-Last}.html` + `{First-Last}.pdf`
+- `tailoring/render-cv.js` — converts `resume.json` → `{First-Last}.html` + `{First-Last}.pdf`, plus `Apply.html` (a cross-platform clickable shortcut to the job's `apply_url`)
 - `~/Documents/job-application-automation/resume-template.json` — personal data template (pre-filled, gitignored)
-- Tailored output: `~/Documents/job-application-automation/CVs/tailored/{job_id}/resume.json` + `.{html,pdf}`
+- Tailored output: `~/Documents/job-application-automation/CVs/tailored/{job_id}/resume.json` + `.{html,pdf}` + `Apply.html`
 
 ---
 
@@ -189,6 +191,7 @@ autofill-chrome-extension/
 private-files/             Gitignored — personal data files go here
   candidate-data.json      Real candidate data (copied to autofill-chrome-extension/ locally)
   resume-template.json     Personal version of the template (pre-filled)
+  {timestamp}-generated-prompts/   Personalized COWORK/TAILOR prompts (paste into Cowork)
 
 package.json               Playwright dependency (npm install from repo root)
 node_modules/              Playwright runtime
@@ -199,9 +202,10 @@ node_modules/              Playwright runtime
   resume-template.json     Personal template — filled in during setup
   CVs/base/Base-CV.html
   CVs/tailored/{job_id}/
-    resume.json            Tailored structured data (model output)
+    resume.json            Tailored structured data (model output; includes apply_url)
     {First-Last}.html      Rendered HTML (render-cv.js output)
     {First-Last}.pdf       Rendered PDF (render-cv.js output)
+    Apply.html             Clickable apply-link shortcut (render-cv.js output, if apply_url set)
 ```
 
 ---
