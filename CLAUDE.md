@@ -77,9 +77,9 @@ SETUP comment for details.
 **Key files:**
 - `tailoring/Base-CV.html` — base CV template (also deployed to `~/Documents/job-application-automation/CVs/base/`)
 - `tailoring/candidate_context.md` — authoritative background facts not in the CV
-- `tailoring/render-cv.js` — converts `resume.json` → `{First-Last}.html` + `{First-Last}.pdf`, plus `Apply.html` (a cross-platform clickable shortcut to the job's `apply_url`)
+- `tailoring/render-cv.js` — converts `resume.json` → `{First-Last}.html` + `{First-Last}.pdf`, plus `{Company}-{Job-Title}-Apply.html` (a cross-platform clickable shortcut to the job's `apply_url`; gets a `-BORDERLINE` tag when the match is borderline)
 - `~/Documents/job-application-automation/resume-template.json` — personal data template (pre-filled, gitignored)
-- Tailored output: `~/Documents/job-application-automation/CVs/tailored/{job_id}/resume.json` + `.{html,pdf}` + `Apply.html`
+- Tailored output: `~/Documents/job-application-automation/CVs/tailored/{job_id}/resume.json` + `.{html,pdf}` + `{Company}-{Job-Title}-Apply.html`
 
 ---
 
@@ -202,10 +202,10 @@ node_modules/              Playwright runtime
   resume-template.json     Personal template — filled in during setup
   CVs/base/Base-CV.html
   CVs/tailored/{job_id}/
-    resume.json            Tailored structured data (model output; includes apply_url)
+    resume.json            Tailored structured data (model output; includes a "job" block: company, title, apply_url, borderline)
     {First-Last}.html      Rendered HTML (render-cv.js output)
     {First-Last}.pdf       Rendered PDF (render-cv.js output)
-    Apply.html             Clickable apply-link shortcut (render-cv.js output, if apply_url set)
+    {Company}-{Job-Title}-Apply.html   Clickable apply-link shortcut (render-cv.js output, if apply_url set; -BORDERLINE tag when borderline)
 ```
 
 ---

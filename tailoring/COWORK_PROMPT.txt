@@ -222,7 +222,12 @@ Use the one-liner from "Summary angle" as the tailoring note written to the CSV 
 Start from the template at ~/Documents/job-application-automation/resume-template.json.
 Replace every <PLACEHOLDER> value with the tailored content.
 Personal info, achievements, languages, and interests are pre-filled - only change them if tailoring requires it.
-Set the "apply_url" field to this row's `apply_url` value, falling back to `job_url` when `apply_url` is blank. This drives the clickable Apply.html shortcut; it never appears in the rendered CV.
+Fill the "job" block from this row:
+- "job.company" = this row's `company`
+- "job.title"   = this row's `title`
+- "job.apply_url" = this row's `apply_url`, falling back to `job_url` when `apply_url` is blank
+- "job.borderline" = true if Step 2 graded this job BORDERLINE, otherwise false
+The "job" block drives the clickable apply shortcut ({company}-{title}-Apply.html, with a -BORDERLINE tag when borderline is true); it never appears in the rendered CV.
 
 Save the completed JSON to: ~/Documents/job-application-automation/CVs/tailored/{job_id}/resume.json
 If a file already exists at that path, overwrite it.
@@ -240,7 +245,7 @@ For each resume.json, run:
 This produces:
   ~/Documents/job-application-automation/CVs/tailored/{job_id}/YOUR_NAME_SLUG.html
   ~/Documents/job-application-automation/CVs/tailored/{job_id}/YOUR_NAME_SLUG.pdf
-  ~/Documents/job-application-automation/CVs/tailored/{job_id}/Apply.html   (clickable apply link, if apply_url is set)
+  ~/Documents/job-application-automation/CVs/tailored/{job_id}/{company}-{title}-Apply.html   (clickable apply link, if job.apply_url is set; -BORDERLINE tag when job.borderline)
 
 If Playwright is not installed, run from the repo root:
   npm install playwright && npx playwright install chromium

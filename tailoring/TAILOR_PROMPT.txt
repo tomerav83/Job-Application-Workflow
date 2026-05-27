@@ -210,7 +210,11 @@ Derive the output slug from the company name and job title:
 Start from the template at ~/Documents/job-application-automation/resume-template.json.
 Replace every <PLACEHOLDER> value with the tailored content.
 Personal info, achievements, languages, and interests are pre-filled - only change them if tailoring requires it.
-Set the "apply_url" field to the job URL the user supplied (the pasted or linked application URL). If only raw job-description text was given with no URL, leave "apply_url" empty. This drives the clickable Apply.html shortcut; it never appears in the rendered CV.
+Fill the "job" block:
+- "job.company" and "job.title" = the company name and job title you used for the slug above
+- "job.apply_url" = the job URL the user supplied (the pasted or linked application URL); if only raw job-description text was given with no URL, leave it empty
+- "job.borderline" = true if Step 2 graded this job BORDERLINE, otherwise false
+The "job" block drives the clickable apply shortcut ({company}-{title}-Apply.html, with a -BORDERLINE tag when borderline is true); it never appears in the rendered CV.
 
 Save the completed JSON to: ~/Documents/job-application-automation/CVs/tailored/{slug}/resume.json
 If a file already exists at that path, overwrite it.
@@ -228,7 +232,7 @@ Run this command to generate the HTML and PDF from the JSON:
 This produces:
   ~/Documents/job-application-automation/CVs/tailored/{slug}/YOUR_NAME_SLUG.html
   ~/Documents/job-application-automation/CVs/tailored/{slug}/YOUR_NAME_SLUG.pdf
-  ~/Documents/job-application-automation/CVs/tailored/{slug}/Apply.html   (clickable apply link, if apply_url is set)
+  ~/Documents/job-application-automation/CVs/tailored/{slug}/{company}-{title}-Apply.html   (clickable apply link, if job.apply_url is set; -BORDERLINE tag when job.borderline)
 
 If Playwright is not installed, run from the repo root:
   npm install playwright && npx playwright install chromium
