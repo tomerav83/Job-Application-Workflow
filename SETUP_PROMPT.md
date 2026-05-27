@@ -117,7 +117,11 @@ CV content (resume template):
 - Up to 3 personal achievements — LinkedIn "Honors & Awards" or CV awards (not work bullets); confirm
 - Languages + proficiency — LinkedIn "Languages" / CV
 - Up to 4 interests/hobbies — not on LinkedIn, so usually MISSING
-- Job history — title, company, start/end dates per role (Experience / CV)
+- Job history — title, company, start/end dates for EACH role as its own entry (Experience /
+  CV). Never merge roles: two roles at the same employer (e.g. a promotion or role change) are
+  two separate entries, never one. Capture dates at MM/YYYY granularity where the sources give
+  it; flag any role-boundary month that is not stated as MISSING. Keep roles distinct in every
+  downstream artifact (Steps 9 and 10).
 
 Then collect every correction or MISSING value via AskUserQuestion (<info_collection_protocol>)
 before continuing.
@@ -170,6 +174,13 @@ render-cv.js needs Playwright to make PDFs. Per <dependency_protocol>:
    - Adjacent skills — close enough to discuss in an interview (label as the
      <skills_adjacency_list> section)
    - Any domain experience (industries, product types, scale)
+   - One <role_*> section PER ROLE from the Step 4 job history — each distinct role is its own
+     section. NEVER merge multiple roles into one section, even when they share an employer (two
+     roles at the same company = two separate sections).
+   - Every role section's dates MUST use MM/YYYY format (e.g. "10/2019 - 03/2023"; the current
+     role ends in "present"). If the month for any role boundary cannot be retrieved from the CV
+     or LinkedIn, ask the user for it via AskUserQuestion before writing the file — never fall
+     back to year-only and never guess.
 4. For any section not grounded in the CV/LinkedIn (role product/industry/tech, general framing,
    off-limits), draft it instead of leaving a TODO:
    a. Research it — WebSearch/WebFetch the company/role for industry, product, and known stack;
