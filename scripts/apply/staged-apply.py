@@ -47,12 +47,36 @@ def ask_os() -> str:
         print("  Please enter WINDOWS, LINUX, or MAC (or 1/2/3).")
 
 
+def _running_under_wsl() -> bool:
+    """True when this Linux Python is running inside WSL (so we must hand paths
+    to Windows via wslpath/explorer.exe rather than cmd.exe start)."""
+    if os.environ.get("WSL_DISTRO_NAME"):
+        return True
+    try:
+        with open("/proc/version", encoding="utf-8") as f:
+            return "microsoft" in f.read().lower()
+    except OSError:
+        return False
+
+
 def open_target(os_type: str, target: str) -> None:
     """Open a URL or a directory with the native opener for the chosen OS."""
+    is_url = target.startswith(("http://", "https://"))
     try:
         if os_type == "WINDOWS":
+            if _running_under_wsl():
+                # Under WSL, cmd.exe `start` can't open a Linux path (it reads the
+                # leading "/home" as a switch) and warns on UNC cwd. Translate the
+                # path with wslpath and let explorer.exe open it; URLs pass through.
+                arg = target
+                if not is_url:
+                    arg = subprocess.run(
+                        ["wslpath", "-w", target],
+                        capture_output=True, text=True, check=True,
+                    ).stdout.strip()
+                subprocess.run(["explorer.exe", arg], check=False)
             # os.startfile handles both URLs and folders via shell associations.
-            if hasattr(os, "startfile"):
+            elif hasattr(os, "startfile"):
                 os.startfile(target)  # type: ignore[attr-defined]
             else:
                 subprocess.run(["cmd.exe", "/c", "start", "", target], check=False)
