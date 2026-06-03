@@ -100,12 +100,12 @@ if (!personal || !personal.name) {
   const fallback = loadCandidateDataFallback();
   if (!fallback) {
     console.error(
-        'Error: no personal info found.\n' +
-        '  Checked:\n' +
-        '    1. resume.json → personal.name\n' +
-        '    2. private-files/candidate-data.json\n' +
-        '    3. autofill-chrome-extension/candidate-data.json\n' +
-        '  Add a "personal" block to resume.json or create one of the above files.'
+      'Error: no personal info found.\n' +
+      '  Checked:\n' +
+      '    1. resume.json → personal.name\n' +
+      '    2. private-files/candidate-data.json\n' +
+      '    3. autofill-chrome-extension/candidate-data.json\n' +
+      '  Add a "personal" block to resume.json or create one of the above files.'
     );
     process.exit(1);
   }
@@ -139,16 +139,16 @@ const ICONS = {
 
 function esc(str) {
   return String(str || '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
 
 function contactItem(text, iconKey, href) {
   const label = href
-      ? `<a href="${esc(href)}" target="_blank">${esc(text)}</a>`
-      : esc(text);
+    ? `<a href="${esc(href)}" target="_blank">${esc(text)}</a>`
+    : esc(text);
   return `
       <div class="contact-item">
         <span>${label}</span>
@@ -158,8 +158,8 @@ function contactItem(text, iconKey, href) {
 
 function renderHeader(p) {
   const linkedinHref = p.linkedin
-      ? (p.linkedin.startsWith('http') ? p.linkedin : `https://${p.linkedin}`)
-      : '';
+    ? (p.linkedin.startsWith('http') ? p.linkedin : `https://${p.linkedin}`)
+    : '';
 
   return `
   <!-- HEADER -->
@@ -175,7 +175,7 @@ function renderHeader(p) {
         p.location ? contactItem(p.location, 'location', '')                   : '',
         p.linkedin ? contactItem(p.linkedin, 'linkedin', linkedinHref)         : '',
       ].join('')
-  }
+    }
     </div>
   </div>`;
 }
@@ -185,12 +185,12 @@ function renderJobs(jobs) {
   return jobs.map((job, i) => {
     const isLast = i === jobs.length - 1;
     const timeline = isLast
-        ? `<div class="job-dot"></div>`
-        : `<div class="job-dot"></div><div class="job-line"></div>`;
+      ? `<div class="job-dot"></div>`
+      : `<div class="job-dot"></div><div class="job-line"></div>`;
 
     const bullets = (job.achievements || [])
-        .map(a => `              <li>${esc(a)}</li>`)
-        .join('\n');
+      .map(a => `              <li>${esc(a)}</li>`)
+      .join('\n');
 
     return `
       <div class="job">
@@ -618,8 +618,8 @@ async function renderPdf() {
     ({ chromium } = require('playwright'));
   } catch (e) {
     console.error(
-        'Error: Playwright is not installed.\n' +
-        'Run: npm install playwright && npx playwright install chromium'
+      'Error: Playwright is not installed.\n' +
+      'Run: npm install playwright && npx playwright install chromium'
     );
     process.exit(1);
   }
@@ -631,8 +631,8 @@ async function renderPdf() {
 
   // Overflow fallback: shrink fonts if the page content exceeds A4 height
   const overflows = await page.$eval(
-      '.page',
-      el => el.scrollHeight > el.clientHeight
+    '.page',
+    el => el.scrollHeight > el.clientHeight
   );
 
   if (overflows) {
