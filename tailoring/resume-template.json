@@ -56,11 +56,5 @@
   "languages": [
     { "name": "YOUR_LANGUAGE", "level": "Native or Bilingual Proficiency" }
   ],
-  "interests": ["YOUR_INTEREST_1", "YOUR_INTEREST_2"],
-  "job": {
-    "company": "<JOB_COMPANY>",
-    "title": "<JOB_TITLE>",
-    "apply_url": "<APPLY_URL>",
-    "borderline": false
-  }
+  "interests": ["YOUR_INTEREST_1", "YOUR_INTEREST_2"]
 }

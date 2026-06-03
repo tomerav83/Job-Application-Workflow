@@ -274,8 +274,12 @@ render-cv.js needs Playwright to make PDFs. Per <dependency_protocol>:
    b. Present the draft via AskUserQuestion as the recommended (first) option (accept /
       alternative / Other to edit). Bundle related sections.
    c. Save only what the user confirms — no unverified guesses, no TODO left behind.
-5. Save to both: tailoring/candidate_context.md and
-   ~/Documents/job-application-automation/candidate_context.md.
+5. Save ONLY to ~/Documents/job-application-automation/candidate_context.md — this is the sole
+   copy the tailoring prompts read (COWORK_PROMPT.txt / TAILOR_PROMPT.txt reference that runtime
+   path). NEVER write the user's personal context into the tracked tailoring/candidate_context.md:
+   it is a checked-in generic template, and overwriting it with personal data would dirty the repo
+   and risk committing private information. Leave it untouched (same rule Step 12 applies to
+   tailoring/Base-CV.html).
 </step>
 
 <step id="11" name="personalize_prompts">
