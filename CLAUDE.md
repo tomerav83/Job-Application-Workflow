@@ -77,9 +77,10 @@ SETUP comment for details.
 **Key files:**
 - `tailoring/Base-CV.html` — base CV template (also deployed to `~/Documents/job-application-automation/CVs/base/`)
 - `tailoring/candidate_context.md` — authoritative background facts not in the CV
-- `tailoring/render-cv.js` — converts `resume.json` → `{First-Last}.html` + `{First-Last}.pdf`, plus `{Company}-{Job-Title}-Apply.html` (a cross-platform clickable shortcut to the job's `apply_url`; gets a `-BORDERLINE` tag when the match is borderline)
+- `tailoring/render-cv.js` — converts `resume.json` → `{First-Last}.html` + `{First-Last}.pdf`
+- `scripts/apply/staged-apply.py` — after tailoring, walks the most recent tailored CVs (up to 15) one at a time: opens each job's apply URL (looked up in the CSV by `job_id`) in the default browser and opens the CV folder. Asks once which OS you're on (WINDOWS/LINUX/MAC) and waits for Enter between jobs. Run with `python3.11 scripts/apply/staged-apply.py` (`--count N` to change the batch size). See `scripts/apply/README.md`
 - `~/Documents/job-application-automation/resume-template.json` — personal data template (pre-filled, gitignored)
-- Tailored output: `~/Documents/job-application-automation/CVs/tailored/{job_id}/resume.json` + `.{html,pdf}` + `{Company}-{Job-Title}-Apply.html`
+- Tailored output: `~/Documents/job-application-automation/CVs/tailored/{job_id}/resume.json` + `.{html,pdf}`
 
 ---
 
@@ -177,6 +178,15 @@ tailoring/
   Base-CV.pdf              Base CV (PDF reference copy)
   candidate_context.md     Background facts for tailoring
 
+scripts/
+  README.md                Index of helper scripts
+  apply/
+    staged-apply.py        Staged apply: opens each tailored job's apply URL + CV folder, one at a time
+    README.md              What the apply script does and how to run it
+  linkedin-skills/
+    scrape-linkedin-skills.js  Setup helper: scrapes full per-role skills from LinkedIn (MCP truncates these)
+    README.md              What the scraper does and how to run it
+
 application/
   SUBMISSION_PROMPT.md     Application submission prompt
 
@@ -202,10 +212,9 @@ node_modules/              Playwright runtime
   resume-template.json     Personal template — filled in during setup
   CVs/base/Base-CV.html
   CVs/tailored/{job_id}/
-    resume.json            Tailored structured data (model output; includes a "job" block: company, title, apply_url, borderline)
+    resume.json            Tailored structured data (model output)
     {First-Last}.html      Rendered HTML (render-cv.js output)
     {First-Last}.pdf       Rendered PDF (render-cv.js output)
-    {Company}-{Job-Title}-Apply.html   Clickable apply-link shortcut (render-cv.js output, if apply_url set; -BORDERLINE tag when borderline)
 ```
 
 ---

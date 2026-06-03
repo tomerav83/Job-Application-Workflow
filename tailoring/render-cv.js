@@ -610,63 +610,6 @@ fs.mkdirSync(outDir, { recursive: true });
 fs.writeFileSync(htmlPath, html, 'utf8');
 console.log(`HTML written: ${htmlPath}`);
 
-// ─── 8b. Write {Company}-{Title}-Apply.html shortcut ─────────────────────────
-// A tiny redirect page so the job's apply link is one double-click away from the
-// folder. Plain .html is the only shortcut format that opens by double-click on
-// macOS, Linux, and Windows alike (no .url/.webloc/.desktop per-OS quirks).
-//
-// Filename: {company}-{job-title}-Apply.html, slugified to hyphens. Borderline
-// matches (job.borderline === true) get a -BORDERLINE tag before -Apply so they
-// stand out in the folder. Falls back to Apply.html when company/title are absent.
-
-// Slugify to filesystem-safe hyphenated text: collapse any run of non-alphanumeric
-// characters to a single hyphen, trim leading/trailing hyphens, preserve case.
-function slugify(str) {
-  return String(str || '')
-      .replace(/[^a-zA-Z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '');
-}
-
-const job = resume.job || {};
-const applyUrl = job.apply_url || resume.apply_url || resume.job_url || '';
-
-if (applyUrl) {
-  const parts = [slugify(job.company), slugify(job.title)].filter(Boolean);
-  if (job.borderline) parts.push('BORDERLINE');
-  parts.push('Apply');
-  const applyFileName = `${parts.join('-')}.html`;
-  const safeUrl = esc(applyUrl);
-  const applyHtml = `<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="refresh" content="0; url=${safeUrl}">
-<title>Apply</title>
-<style>
-  body { font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-         display: flex; align-items: center; justify-content: center;
-         min-height: 100vh; margin: 0; background: #f4f5f7; }
-  a.btn { display: inline-block; padding: 14px 28px; border-radius: 8px;
-          background: #2563eb; color: #fff; text-decoration: none; font-size: 18px;
-          font-weight: 600; box-shadow: 0 2px 8px rgba(0,0,0,.15); }
-  a.btn:hover { background: #1d4ed8; }
-  p { color: #6b7280; font-size: 13px; margin-top: 16px; text-align: center; }
-</style>
-</head>
-<body>
-<div style="text-align:center">
-  <a class="btn" href="${safeUrl}">Apply now &rarr;</a>
-  <p>If you are not redirected automatically, click the button above.</p>
-</div>
-</body>
-</html>`;
-  const applyPath = path.join(outDir, applyFileName);
-  fs.writeFileSync(applyPath, applyHtml, 'utf8');
-  console.log(`Apply link:   ${applyPath}`);
-} else {
-  console.log('Info: no apply_url in resume.json — skipping Apply.html');
-}
-
 // ─── 9. Render PDF via Playwright ────────────────────────────────────────────
 
 async function renderPdf() {
