@@ -92,13 +92,30 @@ say so plainly, because it is non-obvious:
 5. DISPLAY PREFLIGHT (do this BEFORE any login attempt — the `--login`/`get_my_profile` browser
    is HEADED, so a working, VISIBLE display is required). The common failure is a window that
    loads but never appears on screen, which looks like a hang and wastes a lot of time; catch it
-   up front:
-   - If there is no display at all ($DISPLAY unset, true headless): there is no headed-login path
-     here — go straight to the no-display fallback below (login on another machine, copy
-     ~/.linkedin-mcp over) or skip LinkedIn.
-   - If a display exists (e.g. WSLg sets DISPLAY=:0): do NOT trust `xset q`/`xdpyinfo` — those
-     only prove the X socket answers, not that windows are painted. Actually paint one: run a
-     trivial GUI app (`xmessage hi` or `xeyes`) and ASK the user whether it appeared.
+   up front. First detect the environment (`uname`; on Linux also check /proc/version for
+   "microsoft" = WSL), then branch:
+   - macOS: a local desktop session paints windows reliably; the only real risk is running over
+     SSH with no GUI session. Verify with the BUILT-IN dialog (nothing to install):
+       osascript -e 'display dialog "Display test — click OK" buttons {"OK"} giving up after 15'
+     Dialog appears -> proceed to login (step 6). Command errors or nothing appears (SSH/headless)
+     -> no-display fallback below.
+   - Windows (running natively, not WSL): same — a local desktop always paints. Verify with the
+     BUILT-IN PowerShell dialog (works on all editions; do not use `msg`, it is missing on Home):
+       powershell -Command "Add-Type -AssemblyName PresentationFramework; [System.Windows.MessageBox]::Show('Display test — click OK')"
+     Dialog appears -> proceed to login (step 6). Nothing appears (SSH/server session) ->
+     no-display fallback below.
+   - Linux / WSL: this is where the invisible-window failure actually happens, so test for real:
+     - If there is no display at all ($DISPLAY and $WAYLAND_DISPLAY unset, true headless): there
+       is no headed-login path here — go straight to the no-display fallback below (login on
+       another machine, copy ~/.linkedin-mcp over) or skip LinkedIn.
+     - If a display exists (e.g. WSLg sets DISPLAY=:0): do NOT trust `xset q`/`xdpyinfo` — those
+       only prove the X socket answers, not that windows are painted. Actually paint one with the
+       first dialog tool present (`command -v` to check; none is guaranteed installed):
+         zenity --info --text="Display test"        # GNOME desktops ship it
+         kdialog --msgbox "Display test"            # KDE desktops ship it
+         xmessage "Display test"                    # x11-utils; common but not default
+       If none is installed, install one (`sudo apt install x11-utils` for xmessage) — per
+       <dependency_protocol>, ask first. Then ASK the user whether the window appeared.
        - Appears -> display works; proceed to login (step 6).
        - Does NOT appear (but X answers) -> the compositor is not exporting windows. On WSLg this
          is the RAIL bridge breaking; every browser launch will be invisible no matter what.
