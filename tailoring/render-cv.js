@@ -612,6 +612,28 @@ console.log(`HTML written: ${htmlPath}`);
 
 // ─── 9. Render PDF via Playwright ────────────────────────────────────────────
 
+// Persist Chromium in the job-application-automation folder so it survives session resets.
+// Resolves relative to this script's location (repo root → Documents folder via symlink or
+// direct path). Falls back gracefully if PLAYWRIGHT_BROWSERS_PATH is already set externally.
+if (!process.env.PLAYWRIGHT_BROWSERS_PATH) {
+  const scriptDir = require('path').resolve(__dirname, '..');
+  // In the sandbox the repo is mounted; resolve the sibling Documents folder
+  // by walking up from the repo mount to find the job-application-automation docs folder.
+  const candidates = [
+    // Mac home (when run locally)
+    require('os').homedir() + '/Documents/job-application-automation/.playwright-browsers',
+    // Sandbox mount path pattern: /sessions/<name>/mnt/job-application-automation
+    scriptDir.replace(/\/repos--job-application-automation$/, '/job-application-automation') +
+      '/.playwright-browsers',
+  ];
+  for (const c of candidates) {
+    if (require('fs').existsSync(require('path').dirname(c))) {
+      process.env.PLAYWRIGHT_BROWSERS_PATH = c;
+      break;
+    }
+  }
+}
+
 async function renderPdf() {
   let chromium;
   try {
