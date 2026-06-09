@@ -59,6 +59,7 @@ user's handle.** Derive it from the `url` that `get_my_profile` resolves off
 | `--profile PATH` | `~/.linkedin-mcp/profile` | Session profile dir to copy |
 | `--out PATH` | stdout | Write the JSON result here |
 | `--headed` | off | Show the browser (debugging); default is headless |
+| `--no-sandbox` | off | Disable the Chromium sandbox. Less secure — only if the sandboxed launch fails (root, restricted user namespaces); the script prints a hint when that happens |
 
 ### Output
 

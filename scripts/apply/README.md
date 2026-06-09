@@ -15,7 +15,26 @@ at a time**. For each job it:
 1. opens the job's **apply URL** in your default browser, and
 2. opens that CV's **folder** in your file manager,
 
-then waits for you to press **Enter** before moving on to the next job.
+then waits for you to confirm before moving on. Pressing **Enter** marks the
+job as applied; `s` moves on without marking; `q` quits.
+
+Marking applied writes an `.applied` file into the CV folder — JSON with the
+timestamp, company, and apply URL:
+
+```json
+{
+  "applied_at": "2026-06-07T14:30:00+03:00",
+  "company": "Acme Corp",
+  "apply_url": "https://..."
+}
+```
+
+Folders that already contain `.applied` are **skipped on later runs**, so
+re-running the script only shows you jobs you haven't applied to yet (pass
+`--include-applied` to revisit them).
+
+Run with `--list-applied` to print every company you've marked applied as one
+comma-separated line (oldest first) and exit, e.g. `"Globex", "Acme Corp"`.
 
 You are asked **once**, up front, which OS you're on (`WINDOWS` / `LINUX` /
 `MAC`) so the right "open" command is used.
@@ -45,5 +64,7 @@ Options:
 | `--count N` | `15` | How many of the most recent CVs to process |
 | `--tailored-dir PATH` | `~/Documents/job-application-automation/CVs/tailored` | Override the tailored CVs directory |
 | `--csv PATH` | `~/Documents/job-application-automation/job_tracker.csv` | Override the job tracker CSV |
+| `--include-applied` | off | Also process CVs already marked with `.applied` |
+| `--list-applied` | off | List all companies marked applied, then exit |
 
 No third-party dependencies — standard library only.
